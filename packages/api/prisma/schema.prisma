@@ -1,0 +1,97 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// {attr} - {old from json}
+// id - id_store
+// label - store_label
+// number - number_store
+model Store {
+  id              Int              @id @default(autoincrement())
+  label           String
+  number          Int
+  recommendations Recommendation[]
+  deliveries      Delivery[]
+  Sale            Sale[]
+  Metrics         Metrics[]
+}
+
+// {attr} - {old from json}
+// id - id_poduct
+// name - name_product
+// number - number_product
+// price - price
+model Product {
+  id              Int              @id @default(autoincrement())
+  name            String
+  number          Int
+  price           Float
+  recommendations Recommendation[]
+  deliveries      Delivery[]
+  Sale            Sale[]
+  Metrics         Metrics[]
+}
+
+// {attr} - {old from json}
+// targetDate - target_date
+// storeId - id_store
+// productId - id_product
+// quantity - recommendation
+// value - recommendation_value_by_price
+model Recommendation {
+  targetDate DateTime // @db.date (is not supported by sqlite)
+  storeId    Int
+  store      Store    @relation(fields: [storeId], references: [id])
+  productId  Int
+  product    Product  @relation(fields: [productId], references: [id])
+  quantity   Int
+  value      Float
+
+  @@unique([storeId, productId, targetDate])
+}
+
+// {attr} - {old from json}
+// targetDate - target_date
+// storeId - id_store
+// productId - id_product
+// quantity - delivery_qty
+// value - delivery_value_by_price
+model Delivery {
+  targetDate DateTime // @db.date (is not supported by sqlite)
+  storeId    Int
+  store      Store    @relation(fields: [storeId], references: [id])
+  productId  Int
+  product    Product  @relation(fields: [productId], references: [id])
+  quantity   Int
+  value      Float
+
+  @@unique([storeId, productId, targetDate])
+}
+
+// {attr} - {old from json}
+// targetDate - target_date
+// storeId - id_store
+// productId - id_product
+// salesQuantity - sales_qty
+// salesValue - sales_value
+// demandQuantity - demand_qty
+// demandValue - demand_value
+model Sale {
+  targetDate     DateTime // @db.date (is not supported by sqlite)
+  storeId        Int
+  store          Store    @relation(fields: [storeId], references: [id])
+  productId      Int
+  product        Product  @relation(fields: [productId], references: [id])
+  salesQuantity  Int
+  salesValue     Float
+  demandQuantity Int
+  demandValue    Float
+
+  @@unique([storeId, productId, targetDate])
+}
