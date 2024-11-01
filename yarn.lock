@@ -326,6 +326,19 @@
     ts-pattern "^4.3.0"
     upper-case-first "^2.0.2"
 
+"@zenstackhq/trpc@^2.7.4":
+  version "2.7.4"
+  resolved "https://registry.yarnpkg.com/@zenstackhq/trpc/-/trpc-2.7.4.tgz#8c6be1d319d11d8347e58a94b0101a060fde5351"
+  integrity sha512-jvsqKJSn9YeAluBne0lLsIb1lQWUuj3aLb7LQiPjRreBsANXkoKad8INQ+tXnkDRcavkNojLEwYfyNHpjNxYmA==
+  dependencies:
+    "@zenstackhq/sdk" "2.7.4"
+    change-case "^4.1.2"
+    lower-case-first "^2.0.2"
+    ts-morph "^16.0.0"
+    tslib "^2.4.1"
+    upper-case-first "^2.0.2"
+    zod "^3.22.4"
+
 acorn-walk@^8.1.1:
   version "8.3.4"
   resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-8.3.4.tgz#794dd169c3977edf4ba4ea47583587c5866236b7"

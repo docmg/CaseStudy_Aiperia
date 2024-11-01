@@ -13,7 +13,6 @@ generator client {
   previewFeatures = ["views"]
 }
 
-/// @@allow('read', true)
 model Store {
   id              Int              @id() @default(autoincrement())
   label           String
@@ -24,7 +23,6 @@ model Store {
   Metrics         Metrics[]
 }
 
-/// @@allow('read', true)
 model Product {
   id              Int              @id() @default(autoincrement())
   name            String
@@ -48,7 +46,6 @@ model Recommendation {
   @@unique([storeId, productId, targetDate])
 }
 
-/// @@allow('read', true)
 model Delivery {
   targetDate DateTime
   storeId    Int
@@ -76,7 +73,6 @@ model Sale {
   @@unique([storeId, productId, targetDate])
 }
 
-/// @@allow('read', true)
 view Metrics {
   targetDate          DateTime
   storeId             Int

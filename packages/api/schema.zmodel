@@ -3,6 +3,12 @@ generator client {
   previewFeatures = ["views"]
 }
 
+plugin trpc {
+    provider = '@zenstackhq/trpc'
+    output = './trpc'
+    generateModelActions = ['findFirst', 'findFirstOrThrow', 'findMany', 'findUnique', 'findUniqueOrThrow', 'groupBy', 'count']
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
@@ -20,8 +26,6 @@ model Store {
   deliveries      Delivery[]
   Sale            Sale[]
   Metrics         Metrics[]
-
-  @@allow('read', true)
 }
 
 // {attr} - {old from json}
@@ -38,8 +42,6 @@ model Product {
   deliveries      Delivery[]
   Sale            Sale[]
   Metrics         Metrics[]
-
-  @@allow('read', true)
 }
 
 // {attr} - {old from json}
@@ -76,7 +78,6 @@ model Delivery {
   value      Float
 
   @@unique([storeId, productId, targetDate])
-  @@allow('read', true)
 }
 
 // {attr} - {old from json}
@@ -118,5 +119,4 @@ view Metrics {
   demandValue         Float
 
   @@unique([storeId, productId, targetDate])
-  @@allow('read', true)
 }
