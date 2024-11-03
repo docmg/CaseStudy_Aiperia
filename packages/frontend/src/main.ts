@@ -1,3 +1,5 @@
+import "./index.css";
+
 import { createTRPCVueQueryClient } from "@falcondev-oss/trpc-vue-query";
 import { VueQueryPlugin, useQueryClient } from "@tanstack/vue-query";
 import { httpBatchLink } from "@trpc/client";
