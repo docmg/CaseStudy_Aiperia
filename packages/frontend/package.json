@@ -12,10 +12,13 @@
   },
   "dependencies": {
     "@falcondev-oss/trpc-vue-query": "^0.4.2",
+    "@primevue/themes": "^4.2.1",
     "@tanstack/vue-query": "^5.59.16",
     "@trpc/client": "^10.45.2",
     "api": "./packages/api",
     "pinia": "^2.2.4",
+    "primevue": "^4.2.1",
+    "tailwindcss-primeui": "^0.3.4",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5"
   },
