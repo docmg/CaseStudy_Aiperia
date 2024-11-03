@@ -1133,15 +1133,9 @@ anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-api@./packages/api:
-  version "1.0.0"
-  dependencies:
-    "@prisma/client" "5.21.1"
-    "@trpc/server" "^10.45.2"
-    "@zenstackhq/runtime" "2.7.4"
-    cors "^2.8.5"
-    prisma "^5.21.1"
-    zod "^3.23.8"
+"api@link:./packages/frontend/packages/api":
+  version "0.0.0"
+  uid ""
 
 arg@5.0.2, arg@^5.0.2:
   version "5.0.2"
