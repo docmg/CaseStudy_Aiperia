@@ -7,7 +7,7 @@ generator client {
 plugin trpc {
     provider = '@zenstackhq/trpc'
     output = './trpc'
-    generateModelActions = ['findFirst', 'findFirstOrThrow', 'findMany', 'findUnique', 'findUniqueOrThrow', 'groupBy', 'count']
+    generateModelActions = ['findFirst', 'findFirstOrThrow', 'findMany', 'findUnique', 'findUniqueOrThrow', 'groupBy', 'count', 'aggregate']
 }
 
 datasource db {

@@ -7,6 +7,8 @@ import { checkRead, checkMutate } from '../helper';
 export default function createRouter<Config extends BaseConfig>(router: RouterFactory<Config>, procedure: ProcBuilder<Config>) {
     return router({
 
+        aggregate: procedure.input($Schema.StoreInputSchema.aggregate).query(({ ctx, input }) => checkRead(db(ctx).store.aggregate(input as any))),
+
         findFirst: procedure.input($Schema.StoreInputSchema.findFirst.optional()).query(({ ctx, input }) => checkRead(db(ctx).store.findFirst(input as any))),
 
         findFirstOrThrow: procedure.input($Schema.StoreInputSchema.findFirst.optional()).query(({ ctx, input }) => checkRead(db(ctx).store.findFirstOrThrow(input as any))),
