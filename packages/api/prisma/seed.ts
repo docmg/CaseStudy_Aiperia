@@ -1,11 +1,11 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-
-import dataStores from "../data/stores.json";
+import dataDeliveries from "../data/deliveries.json";
 import dataProducts from "../data/products.json";
 import dataRecommendations from "../data/recommendations.json";
-import dataDeliveries from "../data/deliveries.json";
 import dataSales from "../data/sales.json";
+import dataStores from "../data/stores.json";
+import { PrismaClient } from "./client";
+
+const prisma = new PrismaClient();
 
 async function main() {
   const { store, product, recommendation, delivery, sale } = prisma;
