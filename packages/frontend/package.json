@@ -16,6 +16,7 @@
     "@tanstack/vue-query": "^5.59.16",
     "@trpc/client": "^10.45.2",
     "api": "link:./packages/api",
+    "date-fns": "^4.1.0",
     "pinia": "^2.2.4",
     "primevue": "^4.2.1",
     "tailwindcss-primeui": "^0.3.4",

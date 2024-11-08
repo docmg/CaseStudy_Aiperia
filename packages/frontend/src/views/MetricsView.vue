@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useTRPC } from "@/composables/useTRPC";
-import type { Product, Store } from "api/prisma/client";
+import type { Prisma, Product, Store } from "api/prisma/client";
+import { endOfDay } from "date-fns";
 import { DatePicker, MultiSelect, Select } from "primevue";
 import { computed, ref, watch } from "vue";
 
@@ -44,13 +45,61 @@ const maxDate = computed(() =>
 // Set initial range
 watch([isLoadingDates, minDate, maxDate], () => {
   if (minDate.value && maxDate.value) {
-    selectedRange.value = [minDate.value, maxDate.value];
+    selectedDateRange.value = [minDate.value, maxDate.value];
   }
 });
 
-const selectedStore = ref<Pick<Store, "id"> | null>(null);
-const selectedProducts = ref<Pick<Product, "id">[]>([]);
-const selectedRange = ref<Date[]>([]);
+const selectedStore = ref<Store["id"] | null>(null);
+const selectedProducts = ref<Product["id"][]>([]);
+const selectedDateRange = ref<[Date, Date] | []>([]);
+
+const metricsQuery = computed<Prisma.MetricsFindManyArgs>(() => {
+  const query: Prisma.MetricsFindManyArgs = {
+    select: {
+      targetDate: true,
+      recommendedQuantity: true,
+      salesQuantity: true,
+      demandQuantity: true,
+    },
+    // Apply date range filtering
+    where: {
+      targetDate: {
+        gte: selectedDateRange.value[0],
+        lte: endOfDay(
+          // Because query is disabled if no date is selected, there is always at least one
+          // entry in the array containing date.
+          selectedDateRange.value[1] ?? (selectedDateRange.value[0] as Date),
+        ),
+      },
+    },
+  };
+
+  // Apply store filter if some store is selected
+  if (selectedStore.value !== null) {
+    query.where = {
+      ...query.where,
+      storeId: selectedStore.value,
+    };
+  }
+
+  // Apply products filter if user hast selected some products
+  if (selectedProducts.value.length) {
+    query.where = {
+      ...query.where,
+      productId: { in: selectedProducts.value },
+    };
+  }
+
+  return query;
+});
+
+const dateRangeIsSelected = computed(() =>
+  selectedDateRange.value.some(el => !!el),
+);
+const { data: metricsData } = useTRPC().metrics.findMany.useQuery(
+  metricsQuery,
+  { enabled: dateRangeIsSelected },
+);
 </script>
 
 <template>
@@ -84,9 +133,10 @@ const selectedRange = ref<Date[]>([]);
       :max-date="maxDate"
       :manual-input="false"
       selection-mode="range"
-      v-model="selectedRange"
+      v-model="selectedDateRange"
       :show-week="false"
       :show-icon="true"
+      :number-of-months="2"
     />
   </div>
 </template>
