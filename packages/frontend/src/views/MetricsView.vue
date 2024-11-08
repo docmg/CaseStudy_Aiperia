@@ -122,7 +122,6 @@ const { data: metricsData } = useTRPC().metrics.findMany.useQuery(
       :options="products"
       option-label="name"
       option-value="id"
-      :show-clear="true"
     />
     <DatePicker
       class="w-64"
