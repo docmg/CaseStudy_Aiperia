@@ -43,7 +43,7 @@ const props = defineProps<{
 }>();
 
 const option = ref<EChartsOption>({
-  animation: false,
+  animation: true,
   tooltip: {
     trigger: "axis",
     axisPointer: {

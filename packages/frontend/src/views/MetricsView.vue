@@ -3,7 +3,7 @@ import ChartMetricBars from "@/components/charts/ChartMetricBars.vue";
 import { useTRPC } from "@/composables/useTRPC";
 import type { Prisma, Product, Store } from "api/prisma/client";
 import { endOfDay, format } from "date-fns";
-import { DatePicker, MultiSelect, Select } from "primevue";
+import { Button, DatePicker, MultiSelect, Select } from "primevue";
 import { computed, ref, watch } from "vue";
 
 const { data: stores, isLoading: isLoadingStores } =
@@ -53,6 +53,25 @@ watch([isLoadingDates, minDate, maxDate], () => {
 const selectedStore = ref<Store["id"] | null>(null);
 const selectedProducts = ref<Product["id"][]>([]);
 const selectedDateRange = ref<[Date, Date] | []>([]);
+
+// Button clich handler - reset all inputs
+const resetInputs = () => {
+  selectedStore.value = null;
+  selectedProducts.value.length = 0;
+  if (minDate.value && maxDate.value) {
+    selectedDateRange.value = [minDate.value, maxDate.value];
+  }
+};
+
+const resetButtonEnabled = computed(() => {
+  const [startDate, endDate] = selectedDateRange.value;
+  return (
+    startDate !== minDate.value ||
+    endDate !== maxDate.value ||
+    selectedStore.value !== null ||
+    selectedProducts.value.length > 0
+  );
+});
 
 const metricsQuery = computed<Prisma.MetricsGroupByArgs>(() => {
   const query: Prisma.MetricsGroupByArgs = {
@@ -146,6 +165,13 @@ const { data: metricsData } = useTRPC().metrics.groupBy.useQuery(metricsQuery, {
       :show-week="false"
       :show-icon="true"
       :number-of-months="2"
+    />
+    <Button
+      icon="pi pi-times"
+      aria-label="Reset"
+      severity="secondary"
+      :disabled="!resetButtonEnabled"
+      @click="resetInputs"
     />
   </div>
   <ChartMetricBars :metrics="metricsData || []"></ChartMetricBars>

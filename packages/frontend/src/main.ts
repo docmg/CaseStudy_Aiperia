@@ -1,4 +1,5 @@
 import "./index.css";
+import "primeicons/primeicons.css";
 
 import { createTRPCVueQueryClient } from "@falcondev-oss/trpc-vue-query";
 import { VueQueryPlugin, useQueryClient } from "@tanstack/vue-query";

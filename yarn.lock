@@ -3267,6 +3267,11 @@ pretty-repl@^4.0.0:
     emphasize "^4.2.0"
     strip-ansi "^6.0.0"
 
+primeicons@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/primeicons/-/primeicons-7.0.0.tgz#6b25c3fdcb29bb745a3035bdc1ed5902f4a419cf"
+  integrity sha512-jK3Et9UzwzTsd6tzl2RmwrVY/b8raJ3QZLzoDACj+oTJ0oX7L9Hy+XnVwgo4QVKlKpnP/Ur13SXV/pVh4LzaDw==
+
 primevue@^4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/primevue/-/primevue-4.2.1.tgz#31c206b60ea9fef4c3f069b49a92e8cce3ad0498"
