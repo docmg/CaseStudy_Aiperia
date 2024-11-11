@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ChartMetricBars from "@/components/charts/ChartMetricBars.vue";
 import { useTRPC } from "@/composables/useTRPC";
 import type { Prisma, Product, Store } from "api/prisma/client";
 import { endOfDay } from "date-fns";
@@ -53,21 +54,19 @@ const selectedStore = ref<Store["id"] | null>(null);
 const selectedProducts = ref<Product["id"][]>([]);
 const selectedDateRange = ref<[Date, Date] | []>([]);
 
-const metricsQuery = computed<Prisma.MetricsFindManyArgs>(() => {
-  const query: Prisma.MetricsFindManyArgs = {
-    select: {
-      targetDate: true,
+const metricsQuery = computed<Prisma.MetricsGroupByArgs>(() => {
+  const query: Prisma.MetricsGroupByArgs = {
+    by: ["targetDate"],
+    _sum: {
       recommendedQuantity: true,
+      deliveredQuantity: true,
       salesQuantity: true,
       demandQuantity: true,
     },
-    // Apply date range filtering
     where: {
       targetDate: {
         gte: selectedDateRange.value[0],
         lte: endOfDay(
-          // Because query is disabled if no date is selected, there is always at least one
-          // entry in the array containing date.
           selectedDateRange.value[1] ?? (selectedDateRange.value[0] as Date),
         ),
       },
@@ -96,10 +95,18 @@ const metricsQuery = computed<Prisma.MetricsFindManyArgs>(() => {
 const dateRangeIsSelected = computed(() =>
   selectedDateRange.value.some(el => !!el),
 );
-const { data: metricsData } = useTRPC().metrics.findMany.useQuery(
-  metricsQuery,
-  { enabled: dateRangeIsSelected },
-);
+const { data: metricsData } = useTRPC().metrics.groupBy.useQuery(metricsQuery, {
+  enabled: dateRangeIsSelected,
+  select: data =>
+    // Transform data after agreagation
+    data.map(el => ({
+      recommended: el._sum?.recommendedQuantity ?? 0,
+      delivered: el._sum?.deliveredQuantity ?? 0,
+      demandGap: (el._sum?.demandQuantity ?? 0) - (el._sum?.salesQuantity ?? 0),
+      sales: el._sum?.salesQuantity ?? 0,
+      date: el.targetDate,
+    })),
+});
 </script>
 
 <template>
@@ -138,4 +145,5 @@ const { data: metricsData } = useTRPC().metrics.findMany.useQuery(
       :number-of-months="2"
     />
   </div>
+  <ChartMetricBars :metrics="metricsData || []"></ChartMetricBars>
 </template>
