@@ -2,7 +2,7 @@
 import ChartMetricBars from "@/components/charts/ChartMetricBars.vue";
 import { useTRPC } from "@/composables/useTRPC";
 import type { Prisma, Product, Store } from "api/prisma/client";
-import { endOfDay } from "date-fns";
+import { endOfDay, format } from "date-fns";
 import { DatePicker, MultiSelect, Select } from "primevue";
 import { computed, ref, watch } from "vue";
 
@@ -63,6 +63,9 @@ const metricsQuery = computed<Prisma.MetricsGroupByArgs>(() => {
       salesQuantity: true,
       demandQuantity: true,
     },
+    orderBy: {
+      targetDate: "asc",
+    },
     where: {
       targetDate: {
         gte: selectedDateRange.value[0],
@@ -104,7 +107,7 @@ const { data: metricsData } = useTRPC().metrics.groupBy.useQuery(metricsQuery, {
       delivered: el._sum?.deliveredQuantity ?? 0,
       demandGap: (el._sum?.demandQuantity ?? 0) - (el._sum?.salesQuantity ?? 0),
       sales: el._sum?.salesQuantity ?? 0,
-      date: el.targetDate,
+      date: format(el.targetDate, "dd.MM.yyyy"),
     })),
 });
 </script>

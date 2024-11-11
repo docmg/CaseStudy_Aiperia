@@ -56,7 +56,6 @@ const option = ref<EChartsOption>({
   xAxis: {
     type: "category",
     axisLabel: {
-      formatter: value => format(value, "dd.MM.yyyy"),
       interval: 0, // show label on every entry
     },
   },
@@ -68,6 +67,7 @@ const option = ref<EChartsOption>({
   series: [
     {
       type: "line",
+      step: "middle",
       encode: { x: "date", y: "recommended" },
       name: "Recommendation",
     },
@@ -80,13 +80,13 @@ const option = ref<EChartsOption>({
       type: "bar",
       encode: { x: "date", y: "sales" },
       name: "Sales",
-      stack: "total",
+      stack: "demand",
     },
     {
       type: "bar",
       encode: { x: "date", y: "demandGap" },
       name: "DemandGap",
-      stack: "total",
+      stack: "demand",
     },
   ],
 });
