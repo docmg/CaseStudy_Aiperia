@@ -63,3 +63,5 @@ If you want to invest more time to solve our challenge, you are more than welcom
 
 - Anna would potentially review the report once a week and therefore would need to filter the dataset by calendar week.
 - To further improve user experience in the reporting view you could implement additional click or hover actions in the graph.
+
+[Back](../)
