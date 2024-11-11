@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Metrics } from "api/prisma/client";
-import { format } from "date-fns";
 import type { EChartsOption } from "echarts";
 import { BarChart, LineChart } from "echarts/charts";
 import {
@@ -57,6 +56,31 @@ const option = ref<EChartsOption>({
     type: "category",
     axisLabel: {
       interval: 0, // show label on every entry
+      formatter: (value: string) => {
+        const metric = props.metrics.find(m => m.date === value);
+        if (!metric) {
+          return value;
+        }
+
+        const diffRecommended = Math.abs(metric.demandGap - metric.recommended);
+        const diffDelivered = Math.abs(metric.demandGap - metric.delivered);
+
+        if (diffRecommended <= diffDelivered) {
+          // recommendation is closer to demand
+          return `{green|${value}}`;
+        }
+
+        // delivery is closer to demand
+        return `{red|${value}}`;
+      },
+      rich: {
+        red: {
+          color: "red",
+        },
+        green: {
+          color: "green",
+        },
+      },
     },
   },
   yAxis: {},

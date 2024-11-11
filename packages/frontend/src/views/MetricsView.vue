@@ -124,6 +124,7 @@ const { data: metricsData } = useTRPC().metrics.groupBy.useQuery(metricsQuery, {
     data.map(el => ({
       recommended: el._sum?.recommendedQuantity ?? 0,
       delivered: el._sum?.deliveredQuantity ?? 0,
+      // Calculate demand gap as difference between total demand and total sales
       demandGap: (el._sum?.demandQuantity ?? 0) - (el._sum?.salesQuantity ?? 0),
       sales: el._sum?.salesQuantity ?? 0,
       date: format(el.targetDate, "dd.MM.yyyy"),
@@ -162,7 +163,7 @@ const { data: metricsData } = useTRPC().metrics.groupBy.useQuery(metricsQuery, {
       :manual-input="false"
       selection-mode="range"
       v-model="selectedDateRange"
-      :show-week="false"
+      :show-week="true"
       :show-icon="true"
       :number-of-months="2"
     />
