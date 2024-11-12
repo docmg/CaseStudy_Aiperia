@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useWindowSize } from "@vueuse/core";
 import type { Metrics } from "api/prisma/client";
 import type { EChartsOption } from "echarts";
 import { BarChart, LineChart } from "echarts/charts";
@@ -41,6 +42,7 @@ const props = defineProps<{
   metrics: Metric[];
 }>();
 
+const { width: windowWidth } = useWindowSize();
 const option = ref<EChartsOption>({
   animation: true,
   tooltip: {
@@ -55,7 +57,9 @@ const option = ref<EChartsOption>({
   xAxis: {
     type: "category",
     axisLabel: {
-      interval: 0, // show label on every entry
+      interval: computed(() =>
+        windowWidth.value > 2200 ? 0 : 1,
+      ) as unknown as number,
       formatter: (value: string) => {
         const metric = props.metrics.find(m => m.date === value);
         if (!metric) {

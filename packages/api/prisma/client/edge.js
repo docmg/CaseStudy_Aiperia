@@ -165,7 +165,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/docmg/Projekte/Aiperia/CaseStudy/packages/api/prisma/client",
+      "value": "/Users/docmg/Projekte/CaseStudies/CaseStudy_Aiperia/packages/api/prisma/client",
       "fromEnvVar": null
     },
     "config": {
@@ -181,7 +181,7 @@ const config = {
     "previewFeatures": [
       "views"
     ],
-    "sourceFilePath": "/Users/docmg/Projekte/Aiperia/CaseStudy/packages/api/prisma/schema.prisma",
+    "sourceFilePath": "/Users/docmg/Projekte/CaseStudies/CaseStudy_Aiperia/packages/api/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
